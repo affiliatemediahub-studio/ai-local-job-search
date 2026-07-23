@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AffiliateMediaHub-Studio | AI Local Job Search</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --brand-blue: #2563EB;
+            --brand-dark: #1E293B;
+        }
+        .bg-brand-blue { background-color: var(--brand-blue); }
+        .text-brand-blue { color: var(--brand-blue); }
+        .border-brand-blue { border-color: var(--brand-blue); }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 font-sans leading-normal">
+
+    <!-- Navbar -->
+    <nav class="bg-white border-b border-slate-200 py-4 px-6 flex justify-between items-center sticky top-0 z-50">
+        <div class="flex items-center gap-2">
+            <div class="w-8 h-8 bg-brand-blue rounded flex items-center justify-center text-white">
+                <i class="fas fa-briefcase"></i>
+            </div>
+            <span class="font-bold text-xl text-slate-800">AffiliateMediaHub -Studio</span>
+        </div>
+        <div class="hidden md:flex gap-8 font-medium text-slate-600">
+            <a href="#" class="hover:text-brand-blue">Features</a>
+            <a href="#" class="hover:text-brand-blue">How It Works</a>
+            <a href="#" class="hover:text-brand-blue">Industries</a>
+            <a href="#" class="hover:text-brand-blue">Pricing</a>
+        </div>
+        <div class="flex gap-4">
+            <button class="bg-brand-blue text-white px-6 py-2 rounded-lg font-bold hover:opacity-90">Get Started</button>
+            <button class="border border-slate-300 px-6 py-2 rounded-lg font-bold hover:bg-slate-50">Sign In / Register</button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-4xl mx-auto px-4 py-12">
+        <div class="text-center mb-12">
+            <span class="bg-blue-100 text-brand-blue px-4 py-1 rounded-full text-sm font-bold">Ready to Start?</span>
+            <h1 class="text-4xl md:text-5xl font-extrabold mt-4 mb-6">Upload Your Resumes for ANY Job Title</h1>
+            <p class="text-slate-600 text-lg">Whether you're looking for an AI Engineer position, Sales Manager role, or Warehouse Forklift position—upload and let our AI find the perfect matches for YOU.</p>
+        </div>
+
+        <!-- Form Card -->
+        <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-200 mb-12">
+            <h2 class="text-xl font-bold mb-6">Your Information</h2>
+            <div class="grid md:grid-cols-2 gap-6 mb-8">
+                <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Full Name *</label>
+                    <input type="text" id="fullName" placeholder="Your full name" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-blue">
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Email Address *</label>
+                    <input type="email" id="emailAddress" placeholder="your@email.com" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-blue">
+                </div>
+            </div>
+
+            <h2 class="text-xl font-bold mb-6">Your Job Preferences</h2>
+            <div class="grid md:grid-cols-2 gap-6 mb-8">
+                <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Desired Job Title(s) *</label>
+                    <input type="text" id="jobTitle" placeholder="e.g., Warehouse Forklift, AI Assistant" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-blue">
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Preferred Location(s)</label>
+                    <input type="text" id="location" placeholder="e.g., Orange, TX or Remote" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-blue">
+                </div>
+            </div>
+
+            <!-- Resume Upload Placeholder -->
+            <div class="mb-8">
+                <label class="block text-sm font-bold text-slate-700 mb-4 text-center">Upload Your Resume (PDF, DOCX, TXT)</label>
+                <div class="border-2 border-dashed border-slate-300 rounded-2xl p-10 text-center cursor-pointer hover:border-brand-blue transition" onclick="document.getElementById('resumeFile').click()">
+                    <i class="fas fa-cloud-upload-alt text-4xl text-slate-400 mb-4"></i>
+                    <p class="text-slate-600">Click to upload or drag and drop</p>
+                    <input type="file" id="resumeFile" class="hidden" onchange="updateFileName(event)">
+                    <p id="fileName" class="mt-2 text-brand-blue font-bold"></p>
+                </div>
+            </div>
+
+            <button onclick="submitForm()" class="w-full bg-brand-blue text-white py-4 rounded-2xl font-bold text-lg hover:opacity-90 shadow-lg shadow-blue-200 transition flex items-center justify-center gap-2">
+                <i class="fas fa-magic"></i> Upload & Find My Jobs
+            </button>
+
+            <!-- Status Indicator -->
+            <div id="status" class="hidden mt-6 p-4 rounded-xl text-center font-medium"></div>
+        </div>
+
+        <!-- Pricing Tiers (Matching your screenshot) -->
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold mb-4">Choose Your Plan</h2>
+            <div class="grid md:grid-cols-3 gap-8 mt-10">
+                <!-- Free -->
+                <div class="bg-white p-6 rounded-3xl border border-slate-200 text-left">
+                    <h3 class="font-bold text-lg mb-2">Free</h3>
+                    <p class="text-3xl font-extrabold mb-4">$0<span class="text-sm font-normal text-slate-500">/month</span></p>
+                    <ul class="space-y-3 mb-8 text-sm text-slate-600">
+                        <li><i class="fas fa-check text-green-500 mr-2"></i> 1 resume upload</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i> 5 job matches</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i> Basic tracking</li>
+                    </ul>
+                    <button class="w-full py-2 rounded-lg border border-brand-blue text-brand-blue font-bold hover:bg-blue-50">Get Started Free</button>
+                </div>
+                <!-- Pro -->
+                <div class="bg-brand-blue p-6 rounded-3xl text-white text-left transform scale-105 shadow-xl">
+                    <h3 class="font-bold text-lg mb-2">Pro</h3>
+                    <p class="text-3xl font-extrabold mb-4">$9.99<span class="text-sm font-normal opacity-70">/month</span></p>
+                    <ul class="space-y-3 mb-8 text-sm opacity-90">
+                        <li><i class="fas fa-check mr-2"></i> Up to 3 resumes</li>
+                        <li><i class="fas fa-check mr-2"></i> 20+ job matches</li>
+                        <li><i class="fas fa-check mr-2"></i> Custom cover letters</li>
+                    </ul>
+                    <button class="w-full py-2 rounded-lg bg-white text-brand-blue font-bold hover:bg-slate-100">Upgrade to Pro</button>
+                </div>
+                <!-- Premium -->
+                <div class="bg-white p-6 rounded-3xl border border-slate-200 text-left">
+                    <h3 class="font-bold text-lg mb-2">Premium</h3>
+                    <p class="text-3xl font-extrabold mb-4">$19.99<span class="text-sm font-normal text-slate-500">/month</span></p>
+                    <ul class="space-y-3 mb-8 text-sm text-slate-600">
+                        <li><i class="fas fa-check text-green-500 mr-2"></i> Unlimited resumes</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i> 50+ job matches</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i> Priority support</li>
+                    </ul>
+                    <button class="w-full py-2 rounded-lg border border-brand-blue text-brand-blue font-bold hover:bg-blue-50">Get Premium</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // PASTE YOUR RAILWAY URL HERE
+        const BACKEND_URL = "https://ai-local-job-search-production.up.railway.app";
+
+        function updateFileName(event) {
+            const fileName = event.target.files[0]?.name;
+            if (fileName) {
+                document.getElementById('fileName').innerText = `Selected: ${fileName}`;
+            }
+        }
+
+        async function submitForm() {
+            const fileInput = document.getElementById('resumeFile');
+            const name = document.getElementById('fullName').value;
+            const email = document.getElementById('emailAddress').value;
+            const statusEl = document.getElementById('status');
+
+            if (!fileInput.files[0] || !name || !email) {
+                alert("Please fill in your name, email, and upload a resume.");
+                return;
+            }
+
+            statusEl.classList.remove('hidden', 'bg-red-50', 'text-red-700', 'bg-green-50', 'text-green-700');
+            statusEl.classList.add('bg-blue-50', 'text-brand-blue');
+            statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> AI Agent is processing your request for ${name}...`;
+            statusEl.classList.remove('hidden');
+
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+
+            try {
+                const response = await fetch(`${BACKEND_URL}/upload-resume`, {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.json();
+
+                statusEl.classList.replace('bg-blue-50', 'bg-green-50');
+                statusEl.classList.replace('text-brand-blue', 'text-green-700');
+                statusEl.innerHTML = `
+                    <i class="fas fa-check-circle"></i> Success! <br>
+                    Welcome, ${name}. Your AI Search is active. <br>
+                    Found skills: ${result.data.skills_identified.slice(0,3).join(", ")}
+                `;
+            } catch (error) {
+                console.error('Error:', error);
+                statusEl.classList.replace('bg-blue-50', 'bg-red-50');
+                statusEl.classList.replace('text-brand-blue', 'text-red-700');
+                statusEl.innerHTML = `<i class="fas fa-times-circle"></i> AI Agent Offline. Please check Railway domain settings.`;
+            }
+        }
+    </script>
+</body>
+</html>
