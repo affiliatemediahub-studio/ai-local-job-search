@@ -3,51 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Local Job Search | Ready for John</title>
+    <title>AI Local Job Search | John's Final Version</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body class="bg-slate-50 text-slate-900 p-6">
-    <div class="max-w-xl mx-auto bg-white p-8 rounded-3xl shadow-xl border border-slate-200 mt-12 text-center">
-        <div class="w-16 h-16 bg-blue-600 rounded-2xl mx-auto flex items-center justify-center text-white text-2xl mb-6">
+    <div class="max-w-xl mx-auto bg-white p-8 rounded-3xl shadow-2xl border border-slate-200 mt-12 text-center">
+        <div class="w-16 h-16 bg-blue-600 rounded-2xl mx-auto flex items-center justify-center text-white text-2xl mb-6 shadow-lg shadow-blue-200">
             <i class="fas fa-robot"></i>
         </div>
         <h1 class="text-3xl font-extrabold mb-4">AI Agent Search</h1>
-        <p class="text-slate-600 mb-8">Upload your resume to start the <strong>Realness Engine</strong>. No email activation required!</p>
+        <p class="text-slate-600 mb-8 text-lg">Upload your resume to start the <strong>Realness Engine</strong>. Verified real jobs in West Orange, TX.</p>
 
-        <!-- The "Nerves" of the App -->
         <input type="file" id="resumeFile" class="hidden" onchange="updateFileName(event)">
-        <div class="border-2 border-dashed border-slate-300 rounded-2xl p-10 mb-6 cursor-pointer hover:border-blue-500 transition" onclick="document.getElementById('resumeFile').click()">
+        <div class="border-2 border-dashed border-slate-300 rounded-2xl p-12 mb-6 cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition-all" onclick="document.getElementById('resumeFile').click()">
+            <i class="fas fa-file-pdf text-3xl text-slate-300 mb-4"></i>
             <p id="fileName" class="text-slate-500 font-bold">Click to select your Resume</p>
         </div>
 
-        <button onclick="startAI()" class="w-full bg-blue-600 text-white py-4 rounded-xl font-bold text-lg hover:bg-blue-700 shadow-lg transition">
-            Start My Search Now
+        <button onclick="startAI()" class="w-full bg-blue-600 text-white py-5 rounded-2xl font-bold text-xl hover:bg-blue-700 shadow-xl shadow-blue-100 transition-all transform active:scale-95">
+            <i class="fas fa-search"></i> Start My Search Now
         </button>
 
-        <!-- Status Message -->
-        <div id="status" class="hidden mt-6 p-4 rounded-xl font-medium"></div>
+        <div id="status" class="hidden mt-8 p-6 rounded-2xl font-medium border animate-pulse"></div>
     </div>
 
     <script>
-        // THIS IS THE BRAIN URL
+        // PRE-CONNECTED TO YOUR RAILWAY BRAIN
         const BACKEND = "https://ai-local-job-search-production.up.railway.app";
 
         function updateFileName(event) {
-            document.getElementById('fileName').innerText = "Selected: " + event.target.files[0].name;
-            document.getElementById('fileName').classList.replace('text-slate-500', 'text-blue-600');
+            const name = event.target.files[0]?.name || "Select Resume";
+            document.getElementById('fileName').innerText = "Selected: " + name;
+            document.getElementById('fileName').style.color = "#2563EB";
         }
 
         async function startAI() {
             const file = document.getElementById('resumeFile').files[0];
             const status = document.getElementById('status');
 
-            if (!file) { alert("Please select a file first!"); return; }
+            if (!file) { alert("Please select your resume first!"); return; }
 
-            status.classList.remove('hidden', 'bg-red-50', 'text-red-700', 'bg-green-50', 'text-green-700');
-            status.classList.add('bg-blue-50', 'text-blue-700');
-            status.innerHTML = `<i class="fas fa-spinner fa-spin"></i> AI is parsing your resume on Railway...`;
-            status.classList.remove('hidden');
+            status.className = "mt-8 p-6 rounded-2xl font-medium border bg-blue-50 text-blue-700 border-blue-100 block";
+            status.innerHTML = `<i class="fas fa-spinner fa-spin"></i> AI Agent is analyzing your resume on Railway...`;
 
             const formData = new FormData();
             formData.append('file', file);
@@ -57,12 +55,21 @@
                 const result = await response.json();
 
                 if (result.status === "success") {
-                    status.innerHTML = `<div class="bg-green-50 text-green-700 p-4 rounded-xl">✅ Success! AI found ${result.data.skills_identified.length} skills. Search is active.</div>`;
-                } else {
-                    throw new Error("AI Agent Offline");
-                }
+                    status.className = "mt-8 p-6 rounded-2xl font-medium border bg-green-50 text-green-700 border-green-100 block";
+                    status.innerHTML = `
+                        <div class="text-xl font-bold mb-2">✅ Success!</div>
+                        Your AI search is now active.<br>
+                        <strong>Skills found:</strong> ${result.data.skills_identified.join(", ")}
+                    `;
+                    status.style.animation = "none";
+                } else { throw new Error("AI Busy"); }
             } catch (err) {
-                status.innerHTML = `<div class="bg-red-50 text-red-700 p-4 rounded-xl">⚠️ Connection Error. Ensure "Under Attack Mode" is OFF in Railway Settings.</div>`;
+                status.className = "mt-8 p-6 rounded-2xl font-medium border bg-red-50 text-red-700 border-red-100 block";
+                status.innerHTML = `
+                    <div class="text-xl font-bold mb-2">⚠️ Connection Error</div>
+                    The "Under Attack Mode" is likely ON in Railway.<br>
+                    Please turn it OFF to let the website talk to the AI.
+                `;
             }
         }
     </script>
